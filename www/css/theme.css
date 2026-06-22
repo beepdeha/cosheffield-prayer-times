@@ -1,0 +1,43 @@
+/* ============================================================
+   THEME — colour variables for light (default) and dark mode.
+   Toggle dark mode by setting  <html data-theme="dark">.
+   --fs is the user font-scale multiplier (Settings).
+   ============================================================ */
+:root{
+  --bg:#0e3d2e;            /* deep green */
+  --bg2:#0a2f23;
+  --header-grad-top:#15553f;
+  --card:#ffffff;
+  --ink:#0d2620;          /* near-black green text */
+  --muted:#5b6f68;
+  --accent:#c79a3a;       /* gold */
+  --accent-soft:#f4ecd8;
+  --line:#e3e8e5;
+  --highlight:#fff7e2;    /* highlighted "next" row */
+  --highlight-edge:#c79a3a;
+  --on-dark:#ffffff;      /* text that sits on the green background */
+  --on-dark-soft:rgba(255,255,255,.78);
+  --nav-bg:#0a2f23;
+  --nav-ink:rgba(255,255,255,.62);
+  --nav-active:#c79a3a;
+  --fs:1;
+}
+
+html[data-theme="dark"]{
+  --bg:#06140f;
+  --bg2:#030b08;
+  --header-grad-top:#0c3325;
+  --card:#13201b;
+  --ink:#eaf2ee;
+  --muted:#9bb0a8;
+  --accent:#d9af4e;
+  --accent-soft:#1c2c25;
+  --line:#243a31;
+  --highlight:#26331f;
+  --highlight-edge:#d9af4e;
+  --on-dark:#eaf2ee;
+  --on-dark-soft:rgba(234,242,238,.72);
+  --nav-bg:#030b08;
+  --nav-ink:rgba(234,242,238,.55);
+  --nav-active:#d9af4e;
+}

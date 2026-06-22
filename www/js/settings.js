@@ -1,0 +1,109 @@
+/* ============================================================
+   SETTINGS — font scale, light/dark theme, notification prefs.
+   Persisted via store.js. Other modules read getSettings().
+   ============================================================ */
+import { getItem, setItem } from "./store.js";
+
+const PRAYERS = ["fajr","zuhr","asr","maghrib","isha"];
+const KEY = "settings.v1";
+
+const DEFAULTS = {
+  fontScale: 1,
+  theme: "light",            // "light" | "dark"
+  notify: {
+    enabled: false,
+    target: "jamaat",        // "jamaat" | "start"
+    leadMinutes: 10,         // 0–60, minutes before
+    prayers: { fajr:true, zuhr:true, asr:true, maghrib:true, isha:true }
+  }
+};
+
+let state = structuredClone(DEFAULTS);
+let onChange = ()=>{};
+
+export function getSettings(){ return state; }
+
+function apply(){
+  document.documentElement.style.setProperty("--fs", state.fontScale.toFixed(2));
+  document.documentElement.setAttribute("data-theme", state.theme);
+  const tc = document.querySelector('meta[name="theme-color"]');
+  if(tc) tc.setAttribute("content", state.theme==="dark" ? "#06140f" : "#0e3d2e");
+}
+
+async function persist(){ await setItem(KEY, state); }
+
+export async function initSettings(changeCb){
+  onChange = changeCb || (()=>{});
+  const saved = await getItem(KEY, null);
+  if(saved) state = Object.assign(structuredClone(DEFAULTS), saved, {
+    notify: Object.assign(structuredClone(DEFAULTS.notify), saved.notify||{})
+  });
+  apply();
+}
+
+const $ = id => document.getElementById(id);
+const clampLead = n => Math.max(0, Math.min(60, Math.round(Number(n)||0)));
+
+export function renderSettings(){
+  const s=state;
+  const root=$("settingsView");
+  root.querySelector(".settings").innerHTML = `
+    <div class="set-card">
+      <h3>Display</h3>
+      <div class="set-row">
+        <div class="lbl">Text size</div>
+        <div class="stepper">
+          <button id="fontDec" aria-label="Smaller text">A−</button>
+          <span class="v" id="fontVal">${Math.round(s.fontScale*100)}%</span>
+          <button id="fontInc" aria-label="Larger text">A+</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div class="lbl">Dark mode</div>
+        <label class="toggle"><input type="checkbox" id="darkToggle" ${s.theme==="dark"?"checked":""}><span class="track"></span><span class="knob"></span></label>
+      </div>
+    </div>
+
+    <div class="set-card">
+      <h3>Prayer notifications</h3>
+      <div class="set-row">
+        <div class="lbl">Enable notifications</div>
+        <label class="toggle"><input type="checkbox" id="notifToggle" ${s.notify.enabled?"checked":""}><span class="track"></span><span class="knob"></span></label>
+      </div>
+      <div class="set-row">
+        <div class="lbl">Notify for</div>
+        <select class="sel" id="notifTarget">
+          <option value="jamaat" ${s.notify.target==="jamaat"?"selected":""}>Jamāʿah time</option>
+          <option value="start" ${s.notify.target==="start"?"selected":""}>Starting time</option>
+        </select>
+      </div>
+      <div class="set-row">
+        <div class="lbl">Minutes before<small>How early to remind you (0–60)</small></div>
+        <input class="num-input" id="notifLead" type="number" inputmode="numeric" min="0" max="60" value="${s.notify.leadMinutes}">
+      </div>
+      ${PRAYERS.map(p=>`
+      <div class="set-row">
+        <div class="lbl">${p.charAt(0).toUpperCase()+p.slice(1)}</div>
+        <label class="toggle"><input type="checkbox" data-prayer="${p}" ${s.notify.prayers[p]?"checked":""}><span class="track"></span><span class="knob"></span></label>
+      </div>`).join("")}
+      <p class="note" style="margin-top:14px;text-align:left">Note: Maghrib reminders use its single time. Reminders are scheduled on your device and work offline.</p>
+    </div>`;
+
+  // wire controls
+  $("fontInc").onclick=()=>setFont(s.fontScale+0.1);
+  $("fontDec").onclick=()=>setFont(s.fontScale-0.1);
+  $("darkToggle").onchange=e=>{ s.theme=e.target.checked?"dark":"light"; apply(); persist(); onChange("theme"); };
+  $("notifToggle").onchange=e=>{ s.notify.enabled=e.target.checked; persist(); onChange("notify"); };
+  $("notifTarget").onchange=e=>{ s.notify.target=e.target.value; persist(); onChange("notify"); };
+  $("notifLead").onchange=e=>{ s.notify.leadMinutes=clampLead(e.target.value); e.target.value=s.notify.leadMinutes; persist(); onChange("notify"); };
+  root.querySelectorAll('input[data-prayer]').forEach(cb=>{
+    cb.onchange=()=>{ s.notify.prayers[cb.dataset.prayer]=cb.checked; persist(); onChange("notify"); };
+  });
+}
+
+function setFont(v){
+  state.fontScale=Math.max(0.85, Math.min(1.6, Math.round(v*10)/10));
+  apply(); persist();
+  const el=$("fontVal"); if(el) el.textContent=Math.round(state.fontScale*100)+"%";
+  onChange("font");
+}
