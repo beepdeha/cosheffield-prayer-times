@@ -1,0 +1,10 @@
+[
+  {
+    "id": "welcome",
+    "type": "event",
+    "title": "Welcome to the app",
+    "body": "Event, death and madrassa announcements will appear here once posted.",
+    "date": "2026-06-22",
+    "image": ""
+  }
+]

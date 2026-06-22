@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0e3d2e">
+<title>Prayer Times</title>
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="mosque">Council of Mosque Sheffield</p>
+    </header>
+
+    <!-- ===== PRAYERS (Today) ===== -->
+    <section id="todayView">
+      <h1 class="title" id="pageTitle">Today's Prayers</h1>
+      <div class="datebar">
+        <button class="navbtn" id="prev" aria-label="Previous day">‹</button>
+        <div class="day">
+          <div class="dow" id="dow">—</div>
+          <div class="date" id="date">—</div>
+        </div>
+        <button class="navbtn" id="next" aria-label="Next day">›</button>
+      </div>
+      <div class="countdown" id="countdown" hidden>
+        <span class="cd-label" id="cdLabel">—</span>
+        <span class="cd-time" id="cdTime">—</span>
+      </div>
+      <button class="todaybtn" id="todayBtn" hidden>Back to today</button>
+      <div class="card">
+        <div class="tablehead"><div>Prayer</div><div>Begins</div><div>Jamāʿah</div></div>
+        <div id="rows"></div>
+      </div>
+      <p class="note">Please double-check against the physical timetable.</p>
+    </section>
+
+    <!-- ===== TIMETABLE (Monthly) ===== -->
+    <section id="timetableView" hidden>
+      <h1 class="title">Monthly Timetable</h1>
+      <div class="monthgrid" id="monthGrid"></div>
+      <div id="monthTable" hidden></div>
+    </section>
+
+    <!-- ===== ANNOUNCEMENTS ===== -->
+    <section id="announcementsView" hidden>
+      <h1 class="title">Announcements</h1>
+      <div class="subtabs">
+        <button class="subtab active" data-type="event">Events</button>
+        <button class="subtab" data-type="death">Deaths</button>
+        <button class="subtab" data-type="madrassa">Madrassa</button>
+      </div>
+      <div class="list" id="annList"></div>
+    </section>
+
+    <!-- ===== DIRECTORY ===== -->
+    <section id="directoryView" hidden>
+      <h1 class="title">Directory</h1>
+      <div class="subtabs">
+        <button class="subtab active" data-dir="mosques">Mosques</button>
+        <button class="subtab" data-dir="businesses">Businesses</button>
+      </div>
+      <div class="list" id="dirList"></div>
+      <div id="mosqueDetail" hidden></div>
+    </section>
+
+    <!-- ===== SETTINGS ===== -->
+    <section id="settingsView" hidden>
+      <h1 class="title">Settings</h1>
+      <div class="settings"></div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="aboutView" hidden>
+      <h1 class="title">About</h1>
+      <div class="list">
+        <div class="item">
+          <h3>Council of Mosque Sheffield</h3>
+          <p>Prayer times, announcements and a directory of local mosques and businesses for the Sheffield community.</p>
+          <p>All prayer times work fully offline. Announcements update when you're online.</p>
+        </div>
+        <div class="item">
+          <h3>Credits</h3>
+          <p>Made by Farhan Yousaf.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Bottom navigation ===== -->
+  <nav class="bottomnav" aria-label="Main">
+    <button class="navitem active" data-nav="prayers"><span class="ico">🕌</span>Prayers</button>
+    <button class="navitem" data-nav="timetable"><span class="ico">🗓️</span>Timetable</button>
+    <button class="navitem" data-nav="announcements"><span class="ico">📣</span>News</button>
+    <button class="navitem" data-nav="directory"><span class="ico">📍</span>Directory</button>
+    <button class="navitem" data-nav="more"><span class="ico">☰</span>More</button>
+  </nav>
+
+  <!-- ===== More drawer ===== -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <div class="drawer" id="drawer" hidden role="menu">
+    <div class="grip"></div>
+    <button class="draweritem" data-go="settings" role="menuitem"><span class="ico">⚙️</span>Settings</button>
+    <button class="draweritem" data-go="about" role="menuitem"><span class="ico">ℹ️</span>About</button>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
