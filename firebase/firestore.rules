@@ -1,18 +1,27 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Anyone can READ content; only signed-in admins can WRITE.
+
+    // Admin user IDs allowed to write. Add more UIDs to this list as needed
+    // (Firebase Console -> Authentication -> Users -> copy "User UID").
+    function isAdmin() {
+      return request.auth != null && request.auth.uid in [
+        "bK3IGT7I9ZOoaS3UjoGqlABLyvs1"
+      ];
+    }
+
+    // Anyone can READ content; only admins can WRITE.
     match /announcements/{doc} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /mosques/{doc} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
     match /businesses/{doc} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
   }
 }

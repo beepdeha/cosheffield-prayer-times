@@ -1,10 +1,18 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+
+    // Admin user IDs allowed to upload. Keep in sync with firestore.rules.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid in [
+        "bK3IGT7I9ZOoaS3UjoGqlABLyvs1"
+      ];
+    }
+
     // Public read for announcement / business images; admins-only write.
     match /{allPaths=**} {
       allow read: if true;
-      allow write: if request.auth != null
+      allow write: if isAdmin()
                    && request.resource.size < 5 * 1024 * 1024   // 5 MB max
                    && request.resource.contentType.matches('image/.*');
     }
