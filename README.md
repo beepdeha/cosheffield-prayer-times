@@ -72,10 +72,13 @@ and rebuild.
 
 ### Preview in a browser while developing
 ```bash
-npx http-server www -p 5599 -c-1
+npm install      # one-time
+npm run serve    # opens http://localhost:5599 in your browser
 ```
-Open http://localhost:5599 (use a server, not the file directly, so the JS
-modules load).
+**Do not double-click `www/index.html`** — browsers block JavaScript modules
+and file loading on `file://`, so the page will look blank/unstyled. It must
+be served over http (the command above), which is also how it runs inside the
+real app.
 
 ---
 

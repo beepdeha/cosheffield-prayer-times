@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "http-server", "www", "-p", "5599", "-c-1"],
       "port": 5599
+    },
+    {
+      "name": "prayer-times-admin",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server", "admin", "-p", "5600", "-c-1"],
+      "port": 5600
     }
   ]
 }
