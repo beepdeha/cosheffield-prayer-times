@@ -43,7 +43,7 @@ export async function loadCollection(name, { orderField="date", desc=true } = {}
   const fb = await getDb();
   if(fb){
     try{
-      const q = query(fb.collection(fb.db, name), fb.orderBy(orderField, desc?"desc":"asc"));
+      const q = fb.query(fb.collection(fb.db, name), fb.orderBy(orderField, desc?"desc":"asc"));
       const snap = await fb.getDocs(q);
       const data = snap.docs.map(d=>({ id:d.id, ...d.data() }));
       await setItem(cacheKey, data);

@@ -4,6 +4,7 @@
    Manages: announcements, mosques (edit), businesses.
    ============================================================ */
 import { firebaseConfig, isConfigured } from "./config.js";
+import { SEED_MOSQUES, SEED_BUSINESSES } from "./seed.js";
 
 const SDK = "https://www.gstatic.com/firebasejs/10.12.2";
 const $ = id => document.getElementById(id);
@@ -121,29 +122,83 @@ $("mSave").onclick = async ()=>{
   }catch(e){ msg($("globalMsg"), e.message, "err"); }
 };
 
-/* ---- Businesses ---- */
+/* ---- Businesses (add new or edit existing) ---- */
+let editingBiz=null;       // null = adding a new business
+let editingBizImage="";    // existing image url when editing
+
+function resetBizForm(){
+  editingBiz=null; editingBizImage="";
+  ["bName","bCategory","bDescription","bPhone","bWebsite"].forEach(id=>$(id).value="");
+  $("bImage").value="";
+  $("bImagePreview").classList.add("hide"); $("bImagePreview").src="";
+  $("bSave").textContent="Add"; $("bizFormTitle").textContent="Add business";
+}
+
 async function refreshBusinesses(){
   const snap = await fb.getDocs(fb.collection(fb.db,"businesses"));
   $("bizList").innerHTML = snap.docs.map(d=>{
     const b=d.data();
     return `<div class="row"><div class="info"><b>${esc(b.name||"")}</b><span>${esc(b.category||"")}</span></div>
-      <button class="btn danger" data-del="${d.id}">Delete</button></div>`;
+      <span style="display:flex;gap:8px">
+        <button class="btn danger" style="background:#0e3d2e" data-edit="${d.id}">Edit</button>
+        <button class="btn danger" data-del="${d.id}">Delete</button>
+      </span></div>`;
   }).join("") || "<p>None yet.</p>";
   $("bizList").querySelectorAll("[data-del]").forEach(btn=>btn.onclick=async()=>{
-    await fb.deleteDoc(fb.doc(fb.db,"businesses",btn.dataset.del)); refreshBusinesses();
+    await fb.deleteDoc(fb.doc(fb.db,"businesses",btn.dataset.del));
+    if(editingBiz===btn.dataset.del) resetBizForm();
+    refreshBusinesses();
+  });
+  $("bizList").querySelectorAll("[data-edit]").forEach(btn=>btn.onclick=async()=>{
+    const snap=await fb.getDoc(fb.doc(fb.db,"businesses",btn.dataset.edit));
+    const b=snap.data()||{};
+    editingBiz=btn.dataset.edit; editingBizImage=b.image||"";
+    $("bName").value=b.name||""; $("bCategory").value=b.category||"";
+    $("bDescription").value=b.description||""; $("bPhone").value=b.phone||""; $("bWebsite").value=b.website||"";
+    $("bImage").value="";
+    if(editingBizImage){ $("bImagePreview").src=editingBizImage; $("bImagePreview").classList.remove("hide"); }
+    else $("bImagePreview").classList.add("hide");
+    $("bSave").textContent="Save changes"; $("bizFormTitle").textContent="Edit business";
+    $("bizFormTitle").scrollIntoView({behavior:"smooth"});
   });
 }
+$("bNew").onclick = resetBizForm;
 $("bSave").onclick = async ()=>{
   try{
-    const image = await uploadImage($("bImage").files[0], "businesses");
-    await fb.addDoc(fb.collection(fb.db,"businesses"), {
+    const file=$("bImage").files[0];
+    const image = file ? await uploadImage(file, "businesses") : editingBizImage;
+    const data={
       name:$("bName").value.trim(), category:$("bCategory").value.trim(),
       description:$("bDescription").value.trim(), phone:$("bPhone").value.trim(),
       website:$("bWebsite").value.trim(), image
-    });
-    ["bName","bCategory","bDescription","bPhone","bWebsite"].forEach(id=>$(id).value=""); $("bImage").value="";
-    msg($("globalMsg"),"Business added.","ok"); refreshBusinesses();
+    };
+    if(editingBiz) await fb.updateDoc(fb.doc(fb.db,"businesses",editingBiz), data);
+    else await fb.addDoc(fb.collection(fb.db,"businesses"), data);
+    msg($("globalMsg"), editingBiz?"Business saved.":"Business added.","ok");
+    resetBizForm(); refreshBusinesses();
   }catch(e){ msg($("globalMsg"), e.message, "err"); }
+};
+
+/* ---- Import starter templates (idempotent: skips if collection not empty) ---- */
+async function importSeed(name, seedArray){
+  const existing = await fb.getDocs(fb.collection(fb.db,name));
+  if(!existing.empty){
+    msg($("globalMsg"), `${name} already has ${existing.size} entr${existing.size===1?"y":"ies"} — import skipped.`, "err");
+    return;
+  }
+  for(const item of seedArray){
+    const { id, ...rest } = item;
+    await fb.setDoc(fb.doc(fb.db, name, id), rest);
+  }
+  msg($("globalMsg"), `Imported ${seedArray.length} starter ${name}.`, "ok");
+}
+$("importMosques").onclick   = async ()=>{ await importSeed("mosques", SEED_MOSQUES); refreshMosques(); };
+$("importBusinesses").onclick= async ()=>{ await importSeed("businesses", SEED_BUSINESSES); refreshBusinesses(); };
+
+// preview a newly chosen business image before saving
+$("bImage").onchange = ()=>{
+  const f=$("bImage").files[0];
+  if(f){ $("bImagePreview").src=URL.createObjectURL(f); $("bImagePreview").classList.remove("hide"); }
 };
 
 function refreshAll(){ refreshAnnouncements(); refreshMosques(); refreshBusinesses(); }

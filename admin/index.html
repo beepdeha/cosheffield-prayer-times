@@ -83,7 +83,12 @@
 
   <!-- Mosques -->
   <section data-pane="mosques" class="hide">
-    <div class="card"><h2>Mosques</h2><p style="color:var(--muted)">Tap a mosque to edit its details.</p><div id="mosqueList"></div></div>
+    <div class="card">
+      <h2>Mosques</h2>
+      <p style="color:var(--muted)">Tap <b>Edit</b> on a mosque to fill in its details.</p>
+      <button class="btn" id="importMosques">Import 10 starter mosques</button>
+      <div id="mosqueList" style="margin-top:8px"></div>
+    </div>
     <div class="card hide" id="mosqueEditor">
       <h2 id="mosqueEditorTitle">Edit mosque</h2>
       <label>Name</label><input id="mName">
@@ -100,15 +105,23 @@
   <!-- Businesses -->
   <section data-pane="businesses" class="hide">
     <div class="card">
-      <h2>Add business</h2>
+      <h2 id="bizFormTitle">Add business</h2>
       <label>Name</label><input id="bName">
       <label>Category</label><input id="bCategory">
       <label>Description</label><textarea id="bDescription"></textarea>
       <div class="grid2"><div><label>Phone</label><input id="bPhone"></div><div><label>Website</label><input id="bWebsite"></div></div>
-      <label>Image (optional)</label><input id="bImage" type="file" accept="image/*">
-      <button class="btn gold" id="bSave">Add</button>
+      <label>Image / advert (optional)</label><input id="bImage" type="file" accept="image/*">
+      <img id="bImagePreview" class="hide" style="max-width:100%;margin-top:10px;border-radius:8px">
+      <div style="display:flex;gap:10px">
+        <button class="btn gold" id="bSave">Add</button>
+        <button class="btn" id="bNew" style="background:#5b6f68">New / clear</button>
+      </div>
     </div>
-    <div class="card"><h2>Listed</h2><div id="bizList"></div></div>
+    <div class="card">
+      <h2>Listed</h2>
+      <button class="btn" id="importBusinesses">Import 10 starter businesses</button>
+      <div id="bizList" style="margin-top:8px"></div>
+    </div>
   </section>
 </div>
 
