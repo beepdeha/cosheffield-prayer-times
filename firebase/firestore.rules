@@ -15,11 +15,19 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+    match /events/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
     match /mosques/{doc} {
       allow read: if true;
       allow write: if isAdmin();
     }
     match /businesses/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /offers/{doc} {
       allow read: if true;
       allow write: if isAdmin();
     }

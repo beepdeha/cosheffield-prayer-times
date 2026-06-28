@@ -8,5 +8,8 @@
   },
   "storage": {
     "rules": "firebase/storage.rules"
+  },
+  "functions": {
+    "source": "functions"
   }
 }

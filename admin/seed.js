@@ -3,7 +3,7 @@
 export const SEED_MOSQUES = [
   {
     "id": "mosque-1",
-    "name": "Mosque 1 (to be added)",
+    "name": "Masjid 1 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -15,7 +15,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-2",
-    "name": "Mosque 2 (to be added)",
+    "name": "Masjid 2 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -27,7 +27,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-3",
-    "name": "Mosque 3 (to be added)",
+    "name": "Masjid 3 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -39,7 +39,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-4",
-    "name": "Mosque 4 (to be added)",
+    "name": "Masjid 4 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -51,7 +51,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-5",
-    "name": "Mosque 5 (to be added)",
+    "name": "Masjid 5 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -63,7 +63,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-6",
-    "name": "Mosque 6 (to be added)",
+    "name": "Masjid 6 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -75,7 +75,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-7",
-    "name": "Mosque 7 (to be added)",
+    "name": "Masjid 7 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -87,7 +87,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-8",
-    "name": "Mosque 8 (to be added)",
+    "name": "Masjid 8 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -99,7 +99,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-9",
-    "name": "Mosque 9 (to be added)",
+    "name": "Masjid 9 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",
@@ -111,7 +111,7 @@ export const SEED_MOSQUES = [
   },
   {
     "id": "mosque-10",
-    "name": "Mosque 10 (to be added)",
+    "name": "Masjid 10 (to be added)",
     "area": "Sheffield",
     "address": "",
     "jummah": "",

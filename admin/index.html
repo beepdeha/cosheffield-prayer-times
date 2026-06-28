@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prayer Times — Admin</title>
+<title>Jamia Masjid Ghausia — Admin</title>
 <style>
-  :root{--bg:#0e3d2e;--accent:#c79a3a;--card:#fff;--ink:#0d2620;--line:#e3e8e5;--muted:#5b6f68;}
+  :root{--bg:#14532d;--accent:#2f9e44;--card:#fff;--ink:#10342a;--line:#dbe7df;--muted:#5f7268;}
   *{box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-  body{margin:0;background:#0e3d2e;color:var(--ink);}
-  header{background:#0a2f23;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
-  header h1{font-size:1.1rem;margin:0;color:var(--accent);letter-spacing:.05em;}
-  header button{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;}
+  body{margin:0;background:#e7f4ea;color:var(--ink);}
+  header{background:var(--bg);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
+  header h1{font-size:1.05rem;margin:0;color:#fff;letter-spacing:.04em;}
+  header button{background:none;border:1px solid rgba(255,255,255,.5);color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;}
   .wrap{max-width:680px;margin:0 auto;padding:20px;}
-  .card{background:var(--card);border-radius:10px;padding:20px;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+  .card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:0 8px 24px rgba(20,83,45,.12);}
   h2{margin:0 0 14px;font-size:1.05rem;}
+  h3.sub{margin:18px 0 8px;font-size:.95rem;color:var(--bg);}
   label{display:block;font-weight:700;font-size:.82rem;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
   input,select,textarea{width:100%;padding:11px;border:2px solid var(--line);border-radius:8px;font-size:1rem;font-family:inherit;}
-  textarea{min-height:90px;resize:vertical;}
+  textarea{min-height:80px;resize:vertical;}
   .btn{background:var(--bg);color:#fff;border:none;padding:12px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:1rem;margin-top:14px;}
   .btn.gold{background:var(--accent);}
   .btn.danger{background:#b3261e;padding:7px 12px;font-size:.85rem;margin:0;}
   .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-  .tabs button{flex:1;min-width:120px;padding:11px;border:none;border-radius:8px;background:rgba(255,255,255,.15);color:#fff;font-weight:800;cursor:pointer;}
-  .tabs button.active{background:var(--accent);}
+  .tabs button{flex:1;min-width:110px;padding:11px;border:none;border-radius:8px;background:#cfe6d6;color:var(--bg);font-weight:800;cursor:pointer;}
+  .tabs button.active{background:var(--accent);color:#fff;}
   .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line);}
   .row:first-child{border-top:none;}
   .row .info b{display:block;}
@@ -31,14 +32,14 @@
   .msg{padding:10px 14px;border-radius:8px;margin-bottom:14px;font-weight:700;}
   .msg.err{background:#fde8e6;color:#b3261e;}
   .msg.ok{background:#e6f4ea;color:#1e7d34;}
-  .note{color:#fff;opacity:.85;font-size:.9rem;line-height:1.5;}
+  .note{color:var(--muted);font-size:.9rem;line-height:1.5;}
   #login{max-width:380px;margin:60px auto;}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 </style>
 </head>
 <body>
 <header>
-  <h1>PRAYER TIMES — ADMIN</h1>
+  <h1>JAMIA MASJID GHAUSIA — ADMIN</h1>
   <button id="logoutBtn" class="hide">Log out</button>
 </header>
 
@@ -49,29 +50,50 @@
   <label>Email</label><input id="email" type="email" autocomplete="username">
   <label>Password</label><input id="password" type="password" autocomplete="current-password">
   <button class="btn" id="loginBtn">Sign in</button>
-  <p class="note" style="color:var(--muted);margin-top:16px">Accounts are created in Firebase Console → Authentication.</p>
+  <p class="note" style="margin-top:16px">Accounts are created in Firebase Console → Authentication.</p>
 </div></div>
 
 <!-- CONSOLE -->
 <div class="wrap hide" id="console">
   <div id="notConfigured" class="card hide">
     <h2>Firebase not configured yet</h2>
-    <p style="color:var(--muted)">Paste your Firebase config into <code>config.js</code> in this folder, then reload. See the README.</p>
+    <p class="note">Paste your Firebase config into <code>config.js</code> in this folder, then reload. See the README.</p>
   </div>
 
   <div class="tabs">
-    <button data-tab="announcements" class="active">Announcements</button>
-    <button data-tab="mosques">Mosques</button>
+    <button data-tab="events" class="active">Events</button>
+    <button data-tab="announcements">Announcements</button>
+    <button data-tab="mosques">Masjids</button>
     <button data-tab="businesses">Businesses</button>
   </div>
   <div id="globalMsg"></div>
 
+  <!-- Events -->
+  <section data-pane="events">
+    <div class="card">
+      <h2 id="evFormTitle">Add event</h2>
+      <label>Title</label><input id="evTitle">
+      <div class="grid2">
+        <div><label>Date</label><input id="evDate" type="date"></div>
+        <div><label>Start time</label><input id="evStart" type="time"></div>
+      </div>
+      <label>Duration (hours, optional)</label><input id="evDuration" type="number" min="0" step="0.5" placeholder="e.g. 2">
+      <label>Location</label><input id="evLocation">
+      <label>Description</label><textarea id="evDescription"></textarea>
+      <div style="display:flex;gap:10px">
+        <button class="btn gold" id="evSave">Add</button>
+        <button class="btn" id="evNew" style="background:#5f7268">New / clear</button>
+      </div>
+    </div>
+    <div class="card"><h2>Upcoming &amp; recent</h2><div id="evList"></div></div>
+  </section>
+
   <!-- Announcements -->
-  <section data-pane="announcements">
+  <section data-pane="announcements" class="hide">
     <div class="card">
       <h2>Post announcement</h2>
       <label>Type</label>
-      <select id="annType"><option value="event">Event</option><option value="death">Death notice</option><option value="madrassa">Madrassa</option></select>
+      <select id="annType"><option value="reminder">Reminder</option><option value="death">Death notice</option><option value="madrassa">Madrassa</option></select>
       <label>Title</label><input id="annTitle">
       <label>Date</label><input id="annDate" type="date">
       <label>Message</label><textarea id="annBody"></textarea>
@@ -81,16 +103,16 @@
     <div class="card"><h2>Posted</h2><div id="annList"></div></div>
   </section>
 
-  <!-- Mosques -->
+  <!-- Masjids -->
   <section data-pane="mosques" class="hide">
     <div class="card">
-      <h2>Mosques</h2>
-      <p style="color:var(--muted)">Tap <b>Edit</b> on a mosque to fill in its details.</p>
-      <button class="btn" id="importMosques">Import 10 starter mosques</button>
+      <h2>Masjids</h2>
+      <p class="note">Tap <b>Edit</b> on a masjid to fill in its details.</p>
+      <button class="btn" id="importMosques">Import 10 starter masjids</button>
       <div id="mosqueList" style="margin-top:8px"></div>
     </div>
     <div class="card hide" id="mosqueEditor">
-      <h2 id="mosqueEditorTitle">Edit mosque</h2>
+      <h2 id="mosqueEditorTitle">Edit masjid</h2>
       <label>Name</label><input id="mName">
       <div class="grid2"><div><label>Area</label><input id="mArea"></div><div><label>Phone</label><input id="mPhone"></div></div>
       <label>Address</label><input id="mAddress">
@@ -98,7 +120,7 @@
       <div class="grid2"><div><label>Email</label><input id="mEmail"></div><div><label>Website</label><input id="mWebsite"></div></div>
       <label>Location (Google Maps link)</label><input id="mLocation">
       <label>Notes</label><textarea id="mNotes"></textarea>
-      <button class="btn gold" id="mSave">Save mosque</button>
+      <button class="btn gold" id="mSave">Save masjid</button>
     </div>
   </section>
 
@@ -114,7 +136,16 @@
       <img id="bImagePreview" class="hide" style="max-width:100%;margin-top:10px;border-radius:8px">
       <div style="display:flex;gap:10px">
         <button class="btn gold" id="bSave">Add</button>
-        <button class="btn" id="bNew" style="background:#5b6f68">New / clear</button>
+        <button class="btn" id="bNew" style="background:#5f7268">New / clear</button>
+      </div>
+
+      <!-- Per-business offers (only while editing an existing business) -->
+      <div id="bizOffers" class="hide">
+        <h3 class="sub">Offers &amp; news for this business</h3>
+        <label>Offer title</label><input id="offTitle">
+        <label>Details</label><textarea id="offBody"></textarea>
+        <button class="btn" id="offAdd">Add offer</button>
+        <div id="offList" style="margin-top:10px"></div>
       </div>
     </div>
     <div class="card">
