@@ -226,3 +226,17 @@ select.sel{ padding:9px 10px;border:2px solid var(--line);border-radius:10px;bac
 }
 /* Directory boxes: plain box, no green strip on top */
 .dir-grid .card-sq{ border-top:none; }
+
+/* ---------- Lighter Inter weighting ---------- */
+body{ font-weight:400; }
+/* secondary / body text → regular */
+.subtitle,.row .sub,.item .meta,.detail .field .lbl,.offer .meta,.set-row .lbl,
+.set-row .lbl small,.note,.intro,.item p,.event p,.detail .field .val,
+.event .where,.offer p,.stepper .v,.ptr{ font-weight:400; }
+/* headings, labels, nav, controls → medium */
+.mosque,.title,.day .dow,.day .date,.navbtn,.todaybtn,.cd-label,.tablehead,
+.subtab,.monthbtn,.seg button,.mt-cap,.item h3,.event h3,.event .when,.offer h4,
+.section-cap,.set-card h3,.navitem,.backlink,.mt-table th,.mt-table td,.mt-table td.d,
+.num-input,select.sel,.stepper button,.dir-grid .card-sq h3,.dir-grid .card-sq .meta{ font-weight:500; }
+/* prayer times kept clearly readable → semibold */
+.row .name,.row .begins,.row .jamaat,.cd-time,.row.next .name::after{ font-weight:600; }
