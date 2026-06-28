@@ -71,13 +71,12 @@ function renderBusinesses(){
   const list=$("dirList");
   const intro = `<div class="intro">${esc(BUSINESS_INTRO)}</div>`;
   if(!businesses.length){ list.innerHTML=intro+`<p class="empty">No businesses listed yet.</p>`; return; }
-  list.innerHTML = intro + `<div class="list">` + businesses.map(b=>`
-    <div class="item tappable" data-id="${esc(b.id)}">
-      <span class="chev">›</span>
+  list.innerHTML = intro + `<div class="dir-grid">` + businesses.map(b=>`
+    <div class="card-sq" data-id="${esc(b.id)}">
       <h3>${esc(b.name||"")}</h3>
       ${b.category?`<div class="meta">${esc(b.category)}</div>`:""}
     </div>`).join("") + `</div>`;
-  list.querySelectorAll(".item").forEach(el=> el.onclick=()=>showBusiness(el.dataset.id));
+  list.querySelectorAll(".card-sq").forEach(el=> el.onclick=()=>showBusiness(el.dataset.id));
 }
 
 function showBusiness(id){

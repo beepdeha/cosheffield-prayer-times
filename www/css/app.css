@@ -98,7 +98,7 @@ header{ text-align:center; padding:max(20px,env(safe-area-inset-top)) 0 4px; }
 .mt-table td{ padding:10px 6px;text-align:center;border-top:1px solid var(--line);font-size:calc(.94rem*var(--fs));color:var(--ink);font-weight:700; }
 .mt-table td.d{font-weight:800;color:var(--brand);}
 .mt-table tr.is-today td{background:var(--highlight);}
-.mt-table tr.is-today td.d{color:var(--brand-dark);}
+.mt-table tr.is-today td.d{color:var(--accent);}
 .mt-table tr.is-fri td.d{text-decoration:underline;}
 
 /* ---------- Sub-tabs ---------- */
@@ -146,9 +146,8 @@ header{ text-align:center; padding:max(20px,env(safe-area-inset-top)) 0 4px; }
 /* ---------- Directory grid (square masjid cards, 2-up) ---------- */
 .dir-grid{ display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px; }
 .dir-grid .card-sq{
-  background:var(--card);border-radius:14px;box-shadow:0 8px 22px rgba(20,83,45,.10);
-  aspect-ratio:1/1;padding:14px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
-  border-top:4px solid var(--brand);
+  background:var(--card);box-shadow:0 8px 22px rgba(20,83,45,.10);
+  padding:14px 12px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
 }
 .dir-grid .card-sq:active{transform:scale(.98);}
 .dir-grid .card-sq h3{margin:0;color:var(--ink);font-size:calc(1.02rem*var(--fs));font-weight:800;line-height:1.2;}
@@ -246,3 +245,6 @@ body{ font-weight:400; }
 /* titles & headings → bold */
 .mosque,.title,.item h3,.event h3,.set-card h3,.section-cap,.mt-cap,
 .dir-grid .card-sq h3,.offer h4{ font-weight:700; }
+/* timetable dates bold; sub-tab headings bold */
+.mt-table td.d{ font-weight:700; }
+.subtab{ font-weight:700; }
