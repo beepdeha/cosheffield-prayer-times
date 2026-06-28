@@ -11,7 +11,7 @@ let mosques = [];
 let businesses = [];
 let offersByBiz = {};
 
-const BUSINESS_INTRO = "The intention of this app and its business section is for the Muslim community to benefit from the businesses who advertise — both by helping their own businesses grow and by supporting fellow local businesses. These are local businesses, and those who advertise with us also benefit Jamia Masjid Ghausia financially. To find out more, email farhanfns1@gmail.com.";
+const BUSINESS_INTRO = "The intention of this app and its business section is for the Muslim community to benefit from the businesses who advertise — both by helping their own businesses grow and by supporting fellow local businesses.";
 
 function esc(s=""){ return String(s).replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
 
