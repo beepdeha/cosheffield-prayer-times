@@ -207,16 +207,18 @@ select.sel{ padding:9px 10px;border:2px solid var(--line);border-radius:10px;bac
 /* ---------- "More" drawer ---------- */
 .drawer-backdrop{ position:fixed;inset:0;background:rgba(8,30,20,.5);z-index:40; }
 .drawer{
-  position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--card);
+  position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--nav-bg);
   border-radius:18px 18px 0 0;padding:8px 0 calc(14px + env(safe-area-inset-bottom));
   max-width:560px;margin:0 auto;box-shadow:0 -10px 40px rgba(8,30,20,.4);
 }
-.drawer .grip{width:42px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 6px;}
+.drawer .grip{width:42px;height:5px;border-radius:3px;background:rgba(255,255,255,.35);margin:8px auto 6px;}
 .drawer .draweritem{
   display:flex;align-items:center;gap:14px;width:100%;border:none;background:transparent;
-  padding:15px 22px;font-size:calc(1.05rem*var(--fs));font-weight:700;color:var(--ink);cursor:pointer;text-align:left;
+  padding:15px 22px;font-size:calc(1.05rem*var(--fs));font-weight:600;color:#fff;cursor:pointer;text-align:left;
 }
-.drawer .draweritem:active{background:var(--accent-soft);}
+.drawer .draweritem .ico{width:22px;height:22px;display:inline-flex;flex:0 0 auto;}
+.drawer .draweritem .ico svg{width:100%;height:100%;fill:#ffffff;}
+.drawer .draweritem:active{background:rgba(255,255,255,.12);}
 
 /* ---------- Square corners (no rounded UI) ---------- */
 .card,.datebar .day,.navbtn,.todaybtn,.countdown,.item,.item img,.intro,.backlink,
@@ -241,3 +243,6 @@ body{ font-weight:400; }
 .num-input,select.sel,.stepper button,.dir-grid .card-sq h3,.dir-grid .card-sq .meta{ font-weight:500; }
 /* prayer times kept clearly readable → semibold */
 .row .name,.row .begins,.row .jamaat,.cd-time,.row.next .name::after{ font-weight:600; }
+/* titles & headings → bold */
+.mosque,.title,.item h3,.event h3,.set-card h3,.section-cap,.mt-cap,
+.dir-grid .card-sq h3,.offer h4{ font-weight:700; }

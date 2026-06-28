@@ -45,7 +45,7 @@ function buildSchedule(settings, baseDate, days=2){
       // stable-ish id: dayOfYear*100 + prayerIndex
       const doy = Math.floor((at - new Date(at.getFullYear(),0,0)) / 86400000);
       const id = doy*100 + PRAYERS.indexOf(p);
-      const when = useJam ? "Jamāʿah" : "starts";
+      const when = useJam ? "Jamaat" : "starts";
       const body = lead>0 ? `${p.label} ${when} in ${lead} min` : `${p.label} ${when} now`;
       list.push({ id, title:"Prayer Times", body, schedule:{ at }, smallIcon:"ic_stat_icon" });
     }

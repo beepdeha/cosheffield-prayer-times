@@ -69,7 +69,7 @@ function showMonth(m){
         <tbody>${body}</tbody>
       </table>
     </div>
-    <p class="note">Showing <b>${mode==="begins"?"start":"Jamāʿah"} times</b>. Today is highlighted · Friday dates underlined.</p>`;
+    <p class="note">Showing <b>${mode==="begins"?"start":"Jamaat"} times</b>. Today is highlighted · Friday dates underlined.</p>`;
 }
 
 export function initTimetable(){

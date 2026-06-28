@@ -84,7 +84,7 @@ export function renderSettings(){
       <div class="set-row">
         <div class="lbl">Notify for</div>
         <select class="sel" id="notifTarget">
-          <option value="jamaat" ${s.notify.target==="jamaat"?"selected":""}>Jamāʿah time</option>
+          <option value="jamaat" ${s.notify.target==="jamaat"?"selected":""}>Jamaat time</option>
           <option value="start" ${s.notify.target==="start"?"selected":""}>Starting time</option>
         </select>
       </div>
