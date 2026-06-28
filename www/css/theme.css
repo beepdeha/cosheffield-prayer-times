@@ -4,6 +4,13 @@
    Toggle dark mode with  <html data-theme="dark">.
    --fs is the user font-scale multiplier (Settings).
    ============================================================ */
+@font-face{
+  font-family:'Inter';
+  font-style:normal;
+  font-weight:100 900;          /* variable: covers all weights */
+  font-display:swap;
+  src:url('../fonts/inter.woff2') format('woff2');
+}
 :root{
   --bg:#e7f4ea;             /* light green page */
   --bg2:#d6ebdb;

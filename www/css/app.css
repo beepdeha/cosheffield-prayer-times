@@ -8,7 +8,7 @@ body{
     radial-gradient(1200px 480px at 50% -8%, var(--header-grad-top) 0%, var(--bg) 46%, var(--bg2) 100%);
   background-attachment:fixed;
   color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
   padding:0 0 calc(70px + env(safe-area-inset-bottom));
@@ -216,3 +216,13 @@ select.sel{ padding:9px 10px;border:2px solid var(--line);border-radius:10px;bac
   padding:15px 22px;font-size:calc(1.05rem*var(--fs));font-weight:700;color:var(--ink);cursor:pointer;text-align:left;
 }
 .drawer .draweritem:active{background:var(--accent-soft);}
+
+/* ---------- Square corners (no rounded UI) ---------- */
+.card,.day,.navbtn,.todaybtn,.countdown,.item,.item img,.intro,.backlink,
+.event,.event img,.detail .field,.offer,.dir-grid .card-sq,.set-card,
+.num-input,select.sel,.stepper button,.monthbtn,.seg,.subtabs,.drawer,
+.msg,.row.next .name::after{
+  border-radius:0;
+}
+/* Directory boxes: plain box, no green strip on top */
+.dir-grid .card-sq{ border-top:none; }
