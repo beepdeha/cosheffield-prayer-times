@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="#ffffff"/>
+  <g fill="#2e9e44">
+    <!-- left minaret -->
+    <path d="M214 470c0-26 14-44 28-44s28 18 28 44v270h-56z"/>
+    <ellipse cx="242" cy="452" rx="34" ry="40"/>
+    <rect x="232" y="404" width="20" height="34" rx="6"/>
+    <!-- crescent on left minaret -->
+    <g transform="translate(242,388)">
+      <circle r="22" fill="#2e9e44"/>
+      <circle r="22" cx="9" cy="-4" fill="#ffffff"/>
+    </g>
+
+    <!-- right minaret -->
+    <path d="M782 470c0-26-14-44-28-44s-28 18-28 44v270h56z"/>
+    <ellipse cx="754" cy="452" rx="34" ry="40"/>
+    <rect x="744" y="404" width="20" height="34" rx="6"/>
+    <g transform="translate(754,388)">
+      <circle r="22" fill="#2e9e44"/>
+      <circle r="22" cx="9" cy="-4" fill="#ffffff"/>
+    </g>
+
+    <!-- central dome -->
+    <path d="M512 250c70 0 132 70 132 150 0 26-8 46-8 46H388s-8-20-8-46c0-80 62-150 132-150z"/>
+    <rect x="498" y="206" width="28" height="46" rx="8"/>
+    <g transform="translate(512,176)">
+      <circle r="30" fill="#2e9e44"/>
+      <circle r="30" cx="12" cy="-6" fill="#ffffff"/>
+    </g>
+
+    <!-- main building body -->
+    <rect x="330" y="470" width="364" height="270"/>
+    <!-- two side domes -->
+    <path d="M360 470c0-44 30-76 62-76s62 32 62 76z"/>
+    <path d="M540 470c0-44 30-76 62-76s62 32 62 76z"/>
+
+    <!-- ground platform -->
+    <rect x="190" y="740" width="644" height="40" rx="8"/>
+  </g>
+
+  <!-- white arched cut-outs (doorway + windows) -->
+  <g fill="#ffffff">
+    <path d="M474 740V606c0-22 17-40 38-40s38 18 38 40v134z"/>
+    <path d="M392 740v-78c0-16 12-30 30-30s30 14 30 30v78z"/>
+    <path d="M572 740v-78c0-16 12-30 30-30s30 14 30 30v78z"/>
+  </g>
+
+  <!-- name -->
+  <text x="512" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+        font-size="74" font-weight="800" letter-spacing="2" fill="#2e9e44">JAMIA MASJID</text>
+  <text x="512" y="936" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+        font-size="74" font-weight="800" letter-spacing="2" fill="#2e9e44">GHAUSIA</text>
+</svg>

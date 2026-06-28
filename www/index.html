@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-<meta name="theme-color" content="#0e3d2e">
-<title>Prayer Times</title>
+<meta name="theme-color" content="#2f9e44">
+<title>Jamia Masjid Ghausia</title>
 <link rel="stylesheet" href="css/theme.css">
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
   <div class="wrap">
     <header>
-      <p class="mosque">Council of Mosque Sheffield</p>
+      <p class="mosque">Jamia Masjid Ghausia - Sheffield</p>
     </header>
 
     <!-- ===== PRAYERS (Today) ===== -->
     <section id="todayView">
+      <div class="ptr" id="ptr"><span class="spin"></span><span id="ptrText">Pull to refresh</span></div>
       <h1 class="title" id="pageTitle">Today's Prayers</h1>
       <div class="datebar">
         <button class="navbtn" id="prev" aria-label="Previous day">‹</button>
@@ -40,15 +41,27 @@
     <!-- ===== TIMETABLE (Monthly) ===== -->
     <section id="timetableView" hidden>
       <h1 class="title">Monthly Timetable</h1>
+      <div class="tt-controls">
+        <div class="seg" id="ttSeg">
+          <button data-mode="begins" class="active">Start times</button>
+          <button data-mode="jamaat">Jamāʿah times</button>
+        </div>
+      </div>
       <div class="monthgrid" id="monthGrid"></div>
       <div id="monthTable" hidden></div>
+    </section>
+
+    <!-- ===== EVENTS ===== -->
+    <section id="eventsView" hidden>
+      <h1 class="title">Events</h1>
+      <div class="list" id="eventsList"></div>
     </section>
 
     <!-- ===== ANNOUNCEMENTS ===== -->
     <section id="announcementsView" hidden>
       <h1 class="title">Announcements</h1>
       <div class="subtabs">
-        <button class="subtab active" data-type="event">Events</button>
+        <button class="subtab active" data-type="reminder">Reminders</button>
         <button class="subtab" data-type="death">Deaths</button>
         <button class="subtab" data-type="madrassa">Madrassa</button>
       </div>
@@ -59,10 +72,10 @@
     <section id="directoryView" hidden>
       <h1 class="title">Directory</h1>
       <div class="subtabs">
-        <button class="subtab active" data-dir="mosques">Mosques</button>
+        <button class="subtab active" data-dir="mosques">Masjids</button>
         <button class="subtab" data-dir="businesses">Businesses</button>
       </div>
-      <div class="list" id="dirList"></div>
+      <div id="dirList"></div>
       <div id="mosqueDetail" hidden></div>
     </section>
 
@@ -78,8 +91,11 @@
       <div class="list">
         <div class="item">
           <h3>Council of Mosque Sheffield</h3>
-          <p>Prayer times, announcements and a directory of local mosques and businesses for the Sheffield community.</p>
-          <p>All prayer times work fully offline. Announcements update when you're online.</p>
+          <p>The prayer times in this app are based on the Council of Mosque Sheffield prayer times. Jamia Masjid Ghausia and several masjids around Sheffield — included in the directory — follow the same timetable.</p>
+        </div>
+        <div class="item">
+          <h3>Business and advertisement</h3>
+          <p>The intention of this app and its business section is for the Muslim community to benefit from the businesses who advertise — both by helping their own businesses grow and by supporting fellow local businesses. These are local businesses, and those who advertise with us also benefit Jamia Masjid Ghausia financially. To find out more, email farhanfns1@gmail.com.</p>
         </div>
         <div class="item">
           <h3>Credits</h3>
@@ -89,21 +105,22 @@
     </section>
   </div>
 
-  <!-- ===== Bottom navigation ===== -->
+  <!-- ===== Bottom navigation (text only) ===== -->
   <nav class="bottomnav" aria-label="Main">
-    <button class="navitem active" data-nav="prayers"><span class="ico">🕌</span>Prayers</button>
-    <button class="navitem" data-nav="timetable"><span class="ico">🗓️</span>Timetable</button>
-    <button class="navitem" data-nav="announcements"><span class="ico">📣</span>News</button>
-    <button class="navitem" data-nav="directory"><span class="ico">📍</span>Directory</button>
-    <button class="navitem" data-nav="more"><span class="ico">☰</span>More</button>
+    <button class="navitem active" data-nav="prayers">Prayers</button>
+    <button class="navitem" data-nav="timetable">Timetable</button>
+    <button class="navitem" data-nav="events">Events</button>
+    <button class="navitem" data-nav="announcements">News</button>
+    <button class="navitem" data-nav="directory">Directory</button>
+    <button class="navitem" data-nav="more">More</button>
   </nav>
 
   <!-- ===== More drawer ===== -->
   <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
   <div class="drawer" id="drawer" hidden role="menu">
     <div class="grip"></div>
-    <button class="draweritem" data-go="settings" role="menuitem"><span class="ico">⚙️</span>Settings</button>
-    <button class="draweritem" data-go="about" role="menuitem"><span class="ico">ℹ️</span>About</button>
+    <button class="draweritem" data-go="settings" role="menuitem">Settings</button>
+    <button class="draweritem" data-go="about" role="menuitem">About</button>
   </div>
 
   <script type="module" src="js/app.js"></script>

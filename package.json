@@ -5,6 +5,7 @@
   "description": "Council of Mosque Sheffield — prayer times app",
   "scripts": {
     "serve": "npx --yes http-server www -p 5599 -c-1 -o",
+    "apk": "node scripts/build-apk.js",
     "android:add": "cap add android",
     "sync": "cap sync",
     "open": "cap open android",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
+    "@capacitor/browser": "^8.0.3",
     "@capacitor/core": "^8.0.0",
     "@capacitor/local-notifications": "^8.0.0",
     "@capacitor/preferences": "^8.0.0",

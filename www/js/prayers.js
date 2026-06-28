@@ -1,10 +1,12 @@
 /* ============================================================
-   PRAYERS VIEW — today's table, day navigation, live countdown.
+   PRAYERS VIEW — today's table, day navigation, live countdown,
+   and pull-to-refresh.
    ============================================================ */
 import { DOW, MON, dayTimes, nextBegins } from "./data.js";
 
 let view = new Date();              // the date currently shown
 let cdTimer = null;
+let onRefresh = null;               // optional live-content refresh
 
 const $ = id => document.getElementById(id);
 
@@ -65,7 +67,46 @@ function tickCountdown(){
   $("cdTime").textContent = h>0 ? (h+"h "+m+"m") : (m+"m");
 }
 
-export function initPrayers(){
+/* ---- Pull-to-refresh (only while the Prayers view is visible) ---- */
+function initPullToRefresh(){
+  const ptr=$("ptr"), text=$("ptrText");
+  const THRESHOLD=70;
+  let startY=0, pulling=false, dist=0;
+
+  const visible = ()=> !$("todayView").hidden;
+
+  document.addEventListener("touchstart", e=>{
+    if(!visible() || window.scrollY>0 || ptr.classList.contains("refreshing")) return;
+    startY=e.touches[0].clientY; pulling=true; dist=0;
+  }, { passive:true });
+
+  document.addEventListener("touchmove", e=>{
+    if(!pulling) return;
+    dist=e.touches[0].clientY-startY;
+    if(dist>0 && window.scrollY<=0){
+      ptr.classList.add("pulling");
+      text.textContent = dist>THRESHOLD ? "Release to refresh" : "Pull to refresh";
+    } else if(dist<=0){
+      ptr.classList.remove("pulling");
+    }
+  }, { passive:true });
+
+  document.addEventListener("touchend", async ()=>{
+    if(!pulling) return;
+    pulling=false;
+    if(dist>THRESHOLD){
+      ptr.classList.add("refreshing"); text.textContent="Refreshing…";
+      try{ if(onRefresh) await onRefresh(); }catch{ /* ignore */ }
+      render(); tickCountdown();
+      await new Promise(r=>setTimeout(r,500));
+    }
+    ptr.classList.remove("pulling","refreshing");
+    text.textContent="Pull to refresh";
+  });
+}
+
+export function initPrayers(refreshCb){
+  onRefresh = refreshCb || null;
   $("prev").onclick   =()=>{ view.setDate(view.getDate()-1); render(); tickCountdown(); };
   $("next").onclick   =()=>{ view.setDate(view.getDate()+1); render(); tickCountdown(); };
   $("todayBtn").onclick=()=>{ view=new Date(); render(); tickCountdown(); };
@@ -73,7 +114,7 @@ export function initPrayers(){
   tickCountdown();
   if(cdTimer) clearInterval(cdTimer);
   cdTimer=setInterval(tickCountdown,1000);
+  initPullToRefresh();
 }
 
-/* Re-render (e.g. after returning to the Prayers tab or theme change). */
 export function refreshPrayers(){ render(); tickCountdown(); }

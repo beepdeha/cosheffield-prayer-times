@@ -5,6 +5,10 @@
 import { getItem, setItem } from "./store.js";
 
 const PRAYERS = ["fajr","zuhr","asr","maghrib","isha"];
+const ANNOUNCE_TYPES = [
+  ["events","Events"], ["reminder","Reminders"], ["death","Death notices"],
+  ["madrassa","Madrassa"], ["offers","Business offers"]
+];
 const KEY = "settings.v1";
 
 const DEFAULTS = {
@@ -15,6 +19,10 @@ const DEFAULTS = {
     target: "jamaat",        // "jamaat" | "start"
     leadMinutes: 10,         // 0–60, minutes before
     prayers: { fajr:true, zuhr:true, asr:true, maghrib:true, isha:true }
+  },
+  announce: {                // push notifications for posted content
+    enabled: false,
+    types: { events:true, reminder:true, death:true, madrassa:true, offers:true }
   }
 };
 
@@ -27,7 +35,7 @@ function apply(){
   document.documentElement.style.setProperty("--fs", state.fontScale.toFixed(2));
   document.documentElement.setAttribute("data-theme", state.theme);
   const tc = document.querySelector('meta[name="theme-color"]');
-  if(tc) tc.setAttribute("content", state.theme==="dark" ? "#06140f" : "#0e3d2e");
+  if(tc) tc.setAttribute("content", state.theme==="dark" ? "#06140f" : "#2f9e44");
 }
 
 async function persist(){ await setItem(KEY, state); }
@@ -36,7 +44,10 @@ export async function initSettings(changeCb){
   onChange = changeCb || (()=>{});
   const saved = await getItem(KEY, null);
   if(saved) state = Object.assign(structuredClone(DEFAULTS), saved, {
-    notify: Object.assign(structuredClone(DEFAULTS.notify), saved.notify||{})
+    notify: Object.assign(structuredClone(DEFAULTS.notify), saved.notify||{}),
+    announce: Object.assign(structuredClone(DEFAULTS.announce), saved.announce||{}, {
+      types: Object.assign(structuredClone(DEFAULTS.announce.types), saved.announce?.types||{})
+    })
   });
   apply();
 }
@@ -87,6 +98,20 @@ export function renderSettings(){
         <label class="toggle"><input type="checkbox" data-prayer="${p}" ${s.notify.prayers[p]?"checked":""}><span class="track"></span><span class="knob"></span></label>
       </div>`).join("")}
       <p class="note" style="margin-top:14px;text-align:left">Note: Maghrib reminders use its single time. Reminders are scheduled on your device and work offline.</p>
+    </div>
+
+    <div class="set-card">
+      <h3>Announcement notifications</h3>
+      <div class="set-row">
+        <div class="lbl">Enable notifications<small>Get notified when new posts are added</small></div>
+        <label class="toggle"><input type="checkbox" id="annNotifToggle" ${s.announce.enabled?"checked":""}><span class="track"></span><span class="knob"></span></label>
+      </div>
+      ${ANNOUNCE_TYPES.map(([k,label])=>`
+      <div class="set-row">
+        <div class="lbl">${label}</div>
+        <label class="toggle"><input type="checkbox" data-anntype="${k}" ${s.announce.types[k]?"checked":""}><span class="track"></span><span class="knob"></span></label>
+      </div>`).join("")}
+      <p class="note" style="margin-top:14px;text-align:left">Push notifications work on Android once the app is installed.</p>
     </div>`;
 
   // wire controls
@@ -98,6 +123,10 @@ export function renderSettings(){
   $("notifLead").onchange=e=>{ s.notify.leadMinutes=clampLead(e.target.value); e.target.value=s.notify.leadMinutes; persist(); onChange("notify"); };
   root.querySelectorAll('input[data-prayer]').forEach(cb=>{
     cb.onchange=()=>{ s.notify.prayers[cb.dataset.prayer]=cb.checked; persist(); onChange("notify"); };
+  });
+  $("annNotifToggle").onchange=e=>{ s.announce.enabled=e.target.checked; persist(); onChange("announce"); };
+  root.querySelectorAll('input[data-anntype]').forEach(cb=>{
+    cb.onchange=()=>{ s.announce.types[cb.dataset.anntype]=cb.checked; persist(); onChange("announce"); };
   });
 }
 

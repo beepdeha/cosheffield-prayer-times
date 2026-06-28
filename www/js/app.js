@@ -6,8 +6,11 @@
 import { initData } from "./data.js";
 import { initSettings, getSettings, renderSettings } from "./settings.js";
 import { reschedule } from "./notifications.js";
+import { syncSubscriptions } from "./push.js";
+import { initLinks } from "./links.js";
 import { initPrayers, refreshPrayers } from "./prayers.js";
 import { initTimetable } from "./timetable.js";
+import { initEvents } from "./events.js";
 import { initAnnouncements } from "./announcements.js";
 import { initDirectory } from "./directory.js";
 
@@ -16,6 +19,7 @@ const $ = id => document.getElementById(id);
 const SECTIONS = {
   prayers:       { el:"todayView" },
   timetable:     { el:"timetableView" },
+  events:        { el:"eventsView" },
   announcements: { el:"announcementsView" },
   directory:     { el:"directoryView" },
   settings:      { el:"settingsView" },
@@ -32,19 +36,26 @@ function lazyInit(name){
   }
   inited.add(name);
   switch(name){
-    case "prayers":       initPrayers(); break;
+    case "prayers":       initPrayers(refreshLiveContent); break;
     case "timetable":     initTimetable(); break;
+    case "events":        initEvents(); break;
     case "announcements": initAnnouncements(); break;
     case "directory":     initDirectory(); break;
     case "settings":      renderSettings(); break;
   }
 }
 
+/* Pull-to-refresh on Prayers: re-pull live content so other tabs are fresh. */
+async function refreshLiveContent(){
+  inited.delete("events");
+  inited.delete("announcements");
+  inited.delete("directory");
+}
+
 function show(name){
   if(!SECTIONS[name]) return;
   current=name;
   Object.entries(SECTIONS).forEach(([k,v])=> $(v.el).hidden = (k!==name));
-  // highlight bottom nav (settings/about live under "More")
   const navKey = (name==="settings"||name==="about") ? "more" : name;
   document.querySelectorAll(".navitem").forEach(b=>
     b.classList.toggle("active", b.dataset.nav===navKey));
@@ -68,15 +79,18 @@ function wireNav(){
 }
 
 async function main(){
+  initLinks();
   await initData();
   await initSettings(kind=>{
     if(kind==="notify") reschedule(getSettings());
+    if(kind==="announce") syncSubscriptions(getSettings());
     if(kind==="theme"||kind==="font") refreshPrayers();
   });
   wireNav();
   show("prayers");
-  // schedule notifications on launch per saved prefs
+  // apply saved notification prefs on launch
   reschedule(getSettings());
+  syncSubscriptions(getSettings());
 }
 
 main().catch(e=>{
