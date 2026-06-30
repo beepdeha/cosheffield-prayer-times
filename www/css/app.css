@@ -72,8 +72,8 @@ header{ text-align:center; padding:max(20px,env(safe-area-inset-top)) 0 4px; }
 .row .jamaat{color:var(--accent);}
 .row .dash{color:#aebcb4;font-weight:700;}
 .row.sunrise{background:var(--accent-soft);}
-.row.sunrise .name{font-size:calc(1.05rem*var(--fs));color:var(--brand-dark);}
-.row.sunrise .begins{font-size:calc(1.2rem*var(--fs));color:var(--brand-dark);}
+.row.sunrise .name{font-size:calc(1.05rem*var(--fs));color:var(--accent);}
+.row.sunrise .begins{font-size:calc(1.2rem*var(--fs));color:var(--accent);}
 .row.next{ background:var(--highlight);box-shadow:inset 4px 0 0 var(--highlight-edge); }
 .row.next .name::after{
   content:"NEXT";display:inline-block;margin-left:8px;background:var(--brand);color:#fff;
