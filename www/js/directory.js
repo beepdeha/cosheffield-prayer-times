@@ -90,6 +90,7 @@ function showBusiness(id){
       ${offers.map(o=>`<div class="offer">
         ${o.createdAt?`<div class="meta">${new Date(o.createdAt).toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}</div>`:""}
         <h4>${esc(o.title||"")}</h4>
+        ${o.image?`<img src="${esc(o.image)}" alt="" loading="lazy">`:""}
         ${o.body?`<p>${esc(o.body).replace(/\n/g,"<br>")}</p>`:""}
       </div>`).join("")}
     </div>` : "";

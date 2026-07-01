@@ -198,8 +198,9 @@ $("offAdd").onclick = async ()=>{
   if(!editingBiz) return;
   const title=$("offTitle").value.trim(); if(!title){ msg($("globalMsg"),"Offer needs a title.","err"); return; }
   try{
-    await fb.addDoc(fb.collection(fb.db,"offers"), { businessId:editingBiz, title, body:$("offBody").value.trim(), createdAt:Date.now() });
-    $("offTitle").value=""; $("offBody").value="";
+    const image = await uploadImage($("offImage").files[0], "offers");
+    await fb.addDoc(fb.collection(fb.db,"offers"), { businessId:editingBiz, title, body:$("offBody").value.trim(), image, createdAt:Date.now() });
+    $("offTitle").value=""; $("offBody").value=""; $("offImage").value="";
     msg($("globalMsg"),"Offer added.","ok"); refreshOffers(editingBiz);
   }catch(e){ msg($("globalMsg"), e.message, "err"); }
 };
