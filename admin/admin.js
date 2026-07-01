@@ -65,28 +65,54 @@ async function uploadImage(file, folder){
   return await fb.getDownloadURL(ref);
 }
 
-/* ---- Announcements ---- */
+/* ---- Announcements (post new or edit existing) ---- */
+let editingAnn=null, editingAnnImage="";
+function resetAnnForm(){
+  editingAnn=null; editingAnnImage="";
+  ["annTitle","annBody"].forEach(id=>$(id).value=""); $("annImage").value="";
+  $("annDate").value=new Date().toISOString().slice(0,10);
+  $("annImagePreview").classList.add("hide"); $("annImagePreview").src="";
+  $("annSave").textContent="Post"; $("annFormTitle").textContent="Post announcement";
+}
 async function refreshAnnouncements(){
   const snap = await fb.getDocs(fb.query(fb.collection(fb.db,"announcements"), fb.orderBy("date","desc")));
   $("annList").innerHTML = snap.empty ? "<p>None yet.</p>" : snap.docs.map(d=>{
     const a=d.data();
     return `<div class="row"><div class="info"><b>${esc(a.title||"")}</b><span>${esc(a.type||"")} · ${esc(a.date||"")}</span></div>
-      <button class="btn danger" data-del="${d.id}">Delete</button></div>`;
+      <span style="display:flex;gap:8px">
+        <button class="btn danger" style="background:#14532d" data-edit="${d.id}">Edit</button>
+        <button class="btn danger" data-del="${d.id}">Delete</button>
+      </span></div>`;
   }).join("");
   $("annList").querySelectorAll("[data-del]").forEach(btn=>btn.onclick=async()=>{
-    await fb.deleteDoc(fb.doc(fb.db,"announcements",btn.dataset.del)); refreshAnnouncements();
+    await fb.deleteDoc(fb.doc(fb.db,"announcements",btn.dataset.del));
+    if(editingAnn===btn.dataset.del) resetAnnForm();
+    refreshAnnouncements();
+  });
+  $("annList").querySelectorAll("[data-edit]").forEach(btn=>btn.onclick=async()=>{
+    const a=(await fb.getDoc(fb.doc(fb.db,"announcements",btn.dataset.edit))).data()||{};
+    editingAnn=btn.dataset.edit; editingAnnImage=a.image||"";
+    $("annType").value=a.type||"reminder"; $("annTitle").value=a.title||"";
+    $("annDate").value=a.date||new Date().toISOString().slice(0,10); $("annBody").value=a.body||"";
+    $("annImage").value="";
+    if(editingAnnImage){ $("annImagePreview").src=editingAnnImage; $("annImagePreview").classList.remove("hide"); }
+    else $("annImagePreview").classList.add("hide");
+    $("annSave").textContent="Save changes"; $("annFormTitle").textContent="Edit announcement";
+    $("annFormTitle").scrollIntoView({behavior:"smooth"});
   });
 }
+$("annNew").onclick = resetAnnForm;
+$("annImage").onchange = ()=>{ const f=$("annImage").files[0]; if(f){ $("annImagePreview").src=URL.createObjectURL(f); $("annImagePreview").classList.remove("hide"); } };
 $("annSave").onclick = async ()=>{
   try{
-    const image = await uploadImage($("annImage").files[0], "announcements");
-    await fb.addDoc(fb.collection(fb.db,"announcements"), {
-      type:$("annType").value, title:$("annTitle").value.trim(),
-      date:$("annDate").value || new Date().toISOString().slice(0,10),
-      body:$("annBody").value.trim(), image, createdAt:Date.now()
-    });
-    ["annTitle","annBody"].forEach(id=>$(id).value=""); $("annImage").value="";
-    msg($("globalMsg"),"Announcement posted.","ok"); refreshAnnouncements();
+    const file=$("annImage").files[0];
+    const image = file ? await uploadImage(file, "announcements") : editingAnnImage;
+    const data={ type:$("annType").value, title:$("annTitle").value.trim(),
+      date:$("annDate").value || new Date().toISOString().slice(0,10), body:$("annBody").value.trim(), image };
+    if(editingAnn){ await fb.updateDoc(fb.doc(fb.db,"announcements",editingAnn), data); }
+    else { data.createdAt=Date.now(); await fb.addDoc(fb.collection(fb.db,"announcements"), data); }
+    msg($("globalMsg"), editingAnn?"Announcement saved.":"Announcement posted.","ok");
+    resetAnnForm(); refreshAnnouncements();
   }catch(e){ msg($("globalMsg"), e.message, "err"); }
 };
 
@@ -180,28 +206,50 @@ function resetBizForm(){
   $("bImage").value="";
   $("bImagePreview").classList.add("hide"); $("bImagePreview").src="";
   $("bSave").textContent="Add"; $("bizFormTitle").textContent="Add business";
-  $("bizOffers").classList.add("hide"); $("offTitle").value=""; $("offBody").value=""; $("offList").innerHTML="";
+  $("bizOffers").classList.add("hide"); $("offList").innerHTML=""; resetOffForm();
 }
 
-/* offers for the business currently being edited */
+/* offers for the business currently being edited (add or edit) */
+let editingOffer=null, editingOfferImage="";
+function resetOffForm(){
+  editingOffer=null; editingOfferImage="";
+  $("offTitle").value=""; $("offBody").value=""; $("offImage").value="";
+  $("offAdd").textContent="Add offer";
+}
 async function refreshOffers(bizId){
   const snap = await fb.getDocs(fb.query(fb.collection(fb.db,"offers"), fb.where("businessId","==",bizId)));
   const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   $("offList").innerHTML = rows.length ? rows.map(o=>
     `<div class="row"><div class="info"><b>${esc(o.title||"")}</b><span>${o.createdAt?new Date(o.createdAt).toLocaleDateString():""}</span></div>
-      <button class="btn danger" data-deloffer="${o.id}">Delete</button></div>`).join("") : "<p class='note'>No offers yet.</p>";
+      <span style="display:flex;gap:8px">
+        <button class="btn danger" style="background:#14532d" data-editoffer="${o.id}">Edit</button>
+        <button class="btn danger" data-deloffer="${o.id}">Delete</button>
+      </span></div>`).join("") : "<p class='note'>No offers yet.</p>";
   $("offList").querySelectorAll("[data-deloffer]").forEach(btn=>btn.onclick=async()=>{
-    await fb.deleteDoc(fb.doc(fb.db,"offers",btn.dataset.deloffer)); refreshOffers(bizId);
+    await fb.deleteDoc(fb.doc(fb.db,"offers",btn.dataset.deloffer));
+    if(editingOffer===btn.dataset.deloffer) resetOffForm();
+    refreshOffers(bizId);
+  });
+  $("offList").querySelectorAll("[data-editoffer]").forEach(btn=>btn.onclick=async()=>{
+    const o=(await fb.getDoc(fb.doc(fb.db,"offers",btn.dataset.editoffer))).data()||{};
+    editingOffer=btn.dataset.editoffer; editingOfferImage=o.image||"";
+    $("offTitle").value=o.title||""; $("offBody").value=o.body||""; $("offImage").value="";
+    $("offAdd").textContent="Save changes";
+    $("offTitle").scrollIntoView({behavior:"smooth"});
   });
 }
+$("offNew").onclick = resetOffForm;
 $("offAdd").onclick = async ()=>{
   if(!editingBiz) return;
   const title=$("offTitle").value.trim(); if(!title){ msg($("globalMsg"),"Offer needs a title.","err"); return; }
   try{
-    const image = await uploadImage($("offImage").files[0], "offers");
-    await fb.addDoc(fb.collection(fb.db,"offers"), { businessId:editingBiz, title, body:$("offBody").value.trim(), image, createdAt:Date.now() });
-    $("offTitle").value=""; $("offBody").value=""; $("offImage").value="";
-    msg($("globalMsg"),"Offer added.","ok"); refreshOffers(editingBiz);
+    const file=$("offImage").files[0];
+    const image = file ? await uploadImage(file, "offers") : editingOfferImage;
+    const data={ businessId:editingBiz, title, body:$("offBody").value.trim(), image };
+    if(editingOffer){ await fb.updateDoc(fb.doc(fb.db,"offers",editingOffer), data); }
+    else { data.createdAt=Date.now(); await fb.addDoc(fb.collection(fb.db,"offers"), data); }
+    msg($("globalMsg"), editingOffer?"Offer saved.":"Offer added.","ok");
+    resetOffForm(); refreshOffers(editingBiz);
   }catch(e){ msg($("globalMsg"), e.message, "err"); }
 };
 

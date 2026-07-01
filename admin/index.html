@@ -91,14 +91,18 @@
   <!-- Announcements -->
   <section data-pane="announcements" class="hide">
     <div class="card">
-      <h2>Post announcement</h2>
+      <h2 id="annFormTitle">Post announcement</h2>
       <label>Type</label>
       <select id="annType"><option value="reminder">Reminder</option><option value="death">Death notice</option><option value="madrassa">Madrassa</option></select>
       <label>Title</label><input id="annTitle">
       <label>Date</label><input id="annDate" type="date">
       <label>Message</label><textarea id="annBody"></textarea>
       <label>Image (optional)</label><input id="annImage" type="file" accept="image/*">
-      <button class="btn gold" id="annSave">Post</button>
+      <img id="annImagePreview" class="hide" style="max-width:100%;margin-top:10px;border-radius:8px">
+      <div style="display:flex;gap:10px">
+        <button class="btn gold" id="annSave">Post</button>
+        <button class="btn" id="annNew" style="background:#5f7268">New / clear</button>
+      </div>
     </div>
     <div class="card"><h2>Posted</h2><div id="annList"></div></div>
   </section>
@@ -145,7 +149,10 @@
         <label>Offer title</label><input id="offTitle">
         <label>Details</label><textarea id="offBody"></textarea>
         <label>Image (optional)</label><input id="offImage" type="file" accept="image/*">
-        <button class="btn" id="offAdd">Add offer</button>
+        <div style="display:flex;gap:10px">
+          <button class="btn" id="offAdd">Add offer</button>
+          <button class="btn" id="offNew" style="background:#5f7268">New / clear</button>
+        </div>
         <div id="offList" style="margin-top:10px"></div>
       </div>
     </div>
