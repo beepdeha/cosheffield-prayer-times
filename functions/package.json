@@ -1,7 +1,7 @@
 {
   "name": "prayer-times-functions",
   "description": "Cloud Functions: push notifications when content is posted",
-  "engines": { "node": "20" },
+  "engines": { "node": "22" },
   "main": "index.js",
   "dependencies": {
     "firebase-admin": "^12.6.0",

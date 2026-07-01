@@ -29,6 +29,13 @@ if (!fs.existsSync(androidDir)) {
   process.exit(1);
 }
 
+// 1b) copy google-services.json (FCM push) into the android app if present
+const gsvc = path.join(root, "google-services.json");
+if (fs.existsSync(gsvc)) {
+  fs.copyFileSync(gsvc, path.join(androidDir, "app", "google-services.json"));
+  console.log("• Copied google-services.json → android/app");
+}
+
 // 2) ensure local.properties has sdk.dir
 const lp = path.join(androidDir, "local.properties");
 if (!fs.existsSync(lp)) {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "81625512077",
+    "project_id": "council-of-mosque-prayer-times",
+    "storage_bucket": "council-of-mosque-prayer-times.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81625512077:android:acfe728a0598563af60ac4",
+        "android_client_info": {
+          "package_name": "com.cosheffield.prayertimes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_6cGWb_w67eXhJ18AqNtPb_kr-tuNqVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
